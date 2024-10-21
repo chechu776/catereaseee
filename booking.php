@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if (mysqli_query($dbconnect, $sql)) {
         // Optionally, redirect or show a success message
+        $_SESSION['cart']=null;
         echo "<script>alert('Booking successful!'); window.location.href='home.php';</script>";
     } else {
         echo "<script>alert('Error: " . mysqli_error($dbconnect) . "');</script>";

@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
                     } else {
                         echo "<script>alert('Error fetching CSP details.');</script>";
                     }
-                } else{
+                } elseif ($row1['usertype'] == 'admin'){
                     header('Location: admindashboard.php');
                     exit();
                 }

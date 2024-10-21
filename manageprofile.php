@@ -1,7 +1,8 @@
 <?php
 session_start();
 $dbconnect = mysqli_connect("localhost", "root", "", "caterease");
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if (!$dbconnect) {
     die("Connection failed: " . mysqli_connect_error());
 }
