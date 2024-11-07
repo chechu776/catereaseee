@@ -22,12 +22,12 @@ if (isset($_POST['submit'])) {
             $row1 = mysqli_fetch_assoc($data2);
             if ($row1['status'] === 'active') {
                 // Store user ID and name in session
-                $_SESSION['userid'] = $row1['userid'];
                 $_SESSION['usertype'] = $row1['usertype'];
                 // Store the user's name
 
                 if ($row1['usertype'] == 'User') {
                     header('Location: home.php?id=' . $row1['userid']);
+                    $_SESSION['userid'] = $row1['userid'];
                     $_SESSION['username'] = $row1['name']; 
                     exit();
                 } elseif ($row1['usertype'] == 'CSP') {
