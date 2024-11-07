@@ -64,11 +64,28 @@ if (isset($_POST['update_location'])) {
 // Handle menu item deletion
 if (isset($_POST['delete'])) {
     $menu_id = $_POST['menu_id'];
-    $delete_query = "DELETE FROM `menu` WHERE `menu_id` = '$menu_id' AND `csp_id` = '$csp_id'";
+   // Check if the menu item exists in the cart table
+    $check_query = "SELECT * FROM `cart` WHERE `menu_id` = '$menu_id'";
+    $check_result = mysqli_query($dbconnect, $check_query);
+    if (mysqli_num_rows($check_result) > 0) {
+        echo "<script>alert('Cannot delete this menu item because it is in use in the cart.');</script>";
+    } else {
+        $delete_query = "DELETE FROM `menu` WHERE `menu_id` = '$menu_id' AND `csp_id` = '$csp_id'";
+        if (mysqli_query($dbconnect, $delete_query)) {
+            echo "<script>alert('Menu item deleted successfully!');</script>";
+            echo "<script>window.location.href = 'manageprofile.php';</script>";
+        } else {
+            echo "<script>alert('Failed to delete menu item.');</script>";
+        }
+    }
+    // First, delete all cart entries referencing the menu item
+    $delete_cart_query = "DELETE FROM `cart` WHERE `menu_id` = '$menu_id'";
+    mysqli_query($dbconnect, $delete_cart_query);
 
+    // Then, delete the menu item
+    $delete_query = "DELETE FROM `menu` WHERE `menu_id` = '$menu_id' AND `csp_id` = '$csp_id'";
     if (mysqli_query($dbconnect, $delete_query)) {
-        echo "<script>alert('Menu item deleted successfully!');</script>";
-        // Optional: Redirect to the same page to refresh the menu list
+        echo "<script>alert('Menu item and its references in the cart were deleted successfully!');</script>";
         echo "<script>window.location.href = 'manageprofile.php';</script>";
     } else {
         echo "<script>alert('Failed to delete menu item.');</script>";

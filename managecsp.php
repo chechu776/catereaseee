@@ -132,6 +132,7 @@
             $sql="UPDATE csp_table SET status=1 WHERE userid='$id'";
             $result1 = mysqli_query($dbcon, $sql);
             header("Location: managecsp.php");
+            exit();
         }
     ?>
 </body>
